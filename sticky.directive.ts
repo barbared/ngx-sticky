@@ -1,0 +1,132 @@
+import { Directive, Component, OnInit, AfterViewInit, AfterViewChecked, HostListener, Inject, Renderer2, ElementRef, Input } from '@angular/core';
+import { DOCUMENT } from '@angular/platform-browser';
+import { WINDOW_PROVIDERS, WINDOW } from './../services/common/window.service';
+
+@Directive({
+  selector: '[appSticky]'
+})
+export class StickyDirective implements OnInit, AfterViewInit, AfterViewChecked {
+
+  @Input() position: 'top' | 'bottom' = 'top'; // Only 'top' or 'bottom' value possible
+  @Input() margin: number = 0; // Number of pixels from the reference position in terms of margin
+  fixed: boolean = false;
+  ypos: number;
+  screenh: number;
+  elWidth: number;
+  elHeight: number;
+  stickyanchor: any;
+
+  constructor(
+    @Inject(DOCUMENT) private document: Document,
+    @Inject(WINDOW) private window: Window,
+    private elRef: ElementRef,
+    private renderer: Renderer2
+  ) { }
+
+  ngOnInit() {
+
+  }
+
+  ngAfterViewInit() {// Retrieve initial coordinates of the DOM element
+
+    this.screenh = window.innerHeight; // View Height
+
+    // Element sizes
+    this.elWidth = this.elRef.nativeElement.offsetWidth;
+    this.elHeight = this.elRef.nativeElement.offsetHeight;
+
+    // Element position and anchor
+    // this.ypos = this.elRef.nativeElement.getBoundingClientRect().top;
+    this.stickyanchor = this.renderer.createElement('stickyanchor');
+    this.renderer.setStyle(this.stickyanchor, 'display', 'inherit');
+    this.renderer.setStyle(this.stickyanchor, 'height', '0px');
+    this.renderer.setStyle(this.stickyanchor, 'width', this.elWidth + 'px');
+    this.renderer.setStyle(this.stickyanchor, 'visibility', 'hidden');
+    this.renderer.insertBefore(this.elRef.nativeElement.parentNode, this.stickyanchor, this.elRef.nativeElement);
+
+    const y = this.window.pageYOffset || this.document.documentElement.scrollTop || this.document.body.scrollTop || 0;
+    this.ypos = this.stickyanchor.getBoundingClientRect().top + y;
+
+    // console.log('== INIT == sreenh: ' + this.screenh + ' - ypos: ' + this.ypos + ' - elWidth: ' + this.elWidth + ' - elHeight: ' + this.elHeight);
+
+    this.stickyfunction(); // Start with sticky function
+  }
+
+  ngAfterViewChecked() {
+    if (this.elRef.nativeElement.offsetWidth !== 0) { // is visible? (no one of the parent is set to display: none)
+
+      const y = this.window.pageYOffset || this.document.documentElement.scrollTop || this.document.body.scrollTop || 0;
+      const newpos = this.stickyanchor.getBoundingClientRect().top + y;
+
+      if ( !(Math.round(this.ypos) === Math.round(newpos)) ) {
+        this.reset();
+        // console.log('== HARD_RESET == sreenh: ' + this.screenh + ' - ypos: ' + this.ypos + ' - newpos: ' + newpos + ' - elWidth: ' + this.elWidth + ' - elHeight: ' + this.elHeight);
+        this.ypos = newpos;
+        this.stickyfunction();
+      }
+
+    }
+
+    this.elHeight = this.elRef.nativeElement.offsetHeight; // frequently updates the element height in order to listen for internal changes
+
+  }
+
+  @HostListener("window:scroll", [])
+  onWindowScroll() {
+      if (this.elRef.nativeElement.offsetWidth !== 0 ) { // is visible? (no one of the parent is set to display: none)
+        this.stickyfunction();
+      }
+    }
+  @HostListener("window:resize") onResize() {
+      this.reset();
+    }
+
+   private stickyfunction(reset?: boolean) {
+    const y = this.window.pageYOffset || this.document.documentElement.scrollTop || this.document.body.scrollTop || 0;
+    // console.log(this.y);
+
+    const fixtop = y > (this.ypos - this.margin) && this.position === 'top';
+    const fixbottom = y < (this.ypos - this.screenh + this.margin) && this.position === 'bottom';
+    const unfixtop = y <= (this.ypos - this.margin) && this.position === 'top';
+    const unfixbottom = y >= (this.ypos - this.screenh + this.margin) && this.position === 'bottom';
+
+      if ( (fixtop || fixbottom) && !this.fixed) {
+
+        // EXTEND ANCHOR
+        this.renderer.setStyle(this.stickyanchor, 'height', this.elHeight + 'px');
+
+        // SET FIXED
+        this.renderer.setStyle(this.elRef.nativeElement, 'width', this.elWidth + 'px');
+        this.renderer.setStyle(this.elRef.nativeElement.parentElement, 'position', 'relative');
+        this.renderer.setStyle(this.elRef.nativeElement, 'position', 'fixed');
+        this.renderer.setStyle(this.elRef.nativeElement, 'z-index', '50');
+        this.renderer.setStyle(this.elRef.nativeElement, this.position, this.margin + 'px');
+
+        this.fixed = true;
+      }
+      if ( (unfixtop || unfixbottom || reset)  && this.fixed ) {
+
+        // COLLAPSE ANCHOR
+        this.renderer.setStyle(this.stickyanchor, 'height', '0px');
+
+        // SET UNFIXED
+        this.renderer.removeStyle(this.elRef.nativeElement, 'width');
+        this.renderer.removeStyle(this.elRef.nativeElement.parentElement, 'position');
+        this.renderer.removeStyle(this.elRef.nativeElement, 'position');
+        this.renderer.removeStyle(this.elRef.nativeElement, 'z-index');
+        this.renderer.removeStyle(this.elRef.nativeElement, this.position);
+
+        this.fixed = false;
+      }
+
+    }
+
+    public reset() {
+      this.screenh = window.innerHeight;
+      this.elWidth = this.elRef.nativeElement.offsetWidth;
+      this.elHeight = this.elRef.nativeElement.offsetHeight;
+      this.renderer.setStyle(this.stickyanchor, 'width', this.elWidth + 'px');
+      this.stickyfunction(true);
+    }
+
+}
