@@ -1,6 +1,6 @@
 import { Directive, Component, OnInit, AfterViewInit, AfterViewChecked, HostListener, Inject, Renderer2, ElementRef, Input } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
-import { WINDOW_PROVIDERS, WINDOW } from './../services/common/window.service';
+import { WINDOW_PROVIDERS, WINDOW } from './services/window.service';
 
 @Directive({
   selector: '[appSticky]'
