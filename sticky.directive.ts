@@ -5,7 +5,7 @@ import { WINDOW_PROVIDERS, WINDOW } from './services/window.service';
 @Directive({
   selector: '[appSticky]'
 })
-export class StickyDirective implements OnInit, AfterViewInit, AfterViewChecked {
+export class NgxStickyDirective implements OnInit, AfterViewInit, AfterViewChecked {
 
   @Input() position: 'top' | 'bottom' = 'top'; // Only 'top' or 'bottom' value possible
   @Input() margin: number = 0; // Number of pixels from the reference position in terms of margin
