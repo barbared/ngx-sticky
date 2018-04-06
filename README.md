@@ -30,8 +30,8 @@ To install this component to an external project, follow the procedure:
 ## Usage
 
 Apply the __appSticky__ directive to your HTML tags and use the following attributes to manage its options.
-   
-    ```
+
+    ```html
     <div appSticky position="top" margin="50" id="myElement" >  </div>
     ```
     
