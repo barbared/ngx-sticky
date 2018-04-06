@@ -13,7 +13,7 @@ This directive will have a result similar to the CSS3 property __position: stick
 To install this component to an external project, follow the procedure:
 
 1. Add __NgxStickyDirective__ import to your __@NgModule__ like example below
-    ```ts
+```ts
     import { NgModule } from '@angular/core';
     import { BrowserModule } from '@angular/platform-browser';
     import { MyTestApp } from './my-test-app';
@@ -25,14 +25,15 @@ To install this component to an external project, follow the procedure:
         bootstrap:    [ MyTestApp ]
     })
     export class MyTestAppModule {}
-    ```
+```
     
 ## Usage
 
 Apply the __appSticky__ directive to your HTML tags and use the following attributes to manage its options.
-    ```html
+
+```html
     <div appSticky position="top" margin="50" id="myElement" >  </div>
-    ```
+```
     
 ## Attributes
 
