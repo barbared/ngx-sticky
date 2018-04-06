@@ -1,4 +1,4 @@
-# ngx-mydatepicker
+# ngx-sticky
 
 **Angular sticky boxes**
 
@@ -30,6 +30,7 @@ To install this component to an external project, follow the procedure:
 ## Usage
 
 Apply the __appSticky__ directive to your HTML tags and use the following attributes to manage its options.
+   
     ```html
     <div appSticky position="top" margin="50" id="myElement" >  </div>
     ```
@@ -38,9 +39,7 @@ Apply the __appSticky__ directive to your HTML tags and use the following attrib
 
 | Option         | Default        | Type | Description |
 | :------------- | :------------- | :---------- | :---------- |
-| __position__     | 'top' | string | Position of reference for the sticky.
-* top: the element will stick in respect to the top line
-* bottom: the element will stick in respect to the bottom line |
+| __position__     | 'top' | string | Position of reference for the sticky. \n * top: the element will stick in respect to the top line \n * bottom: the element will stick in respect to the bottom line |
 | __margin__   | 0 | number | Number of pixel for the element margin in respect of the reference _position_ while it is sticky. |
 
 ## Compatibility (tested with)
