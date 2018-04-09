@@ -18,10 +18,12 @@ To install this component to an external project, follow the procedure:
     import { BrowserModule } from '@angular/platform-browser';
     import { MyTestApp } from './my-test-app';
     import { NgxStickyDirective } from 'ngx-sticky';
+    import { WINDOW_PROVIDERS, WINDOW, ScrollService } from 'ngx-sticky/services/window.service';
 
     @NgModule({
         imports:      [ BrowserModule ],
         declarations: [ NgxStickyDirective, MyTestApp ],
+        providers:    [ WINDOW_PROVIDERS, ScrollService ],
         bootstrap:    [ MyTestApp ]
     })
     export class MyTestAppModule {}
@@ -32,7 +34,7 @@ To install this component to an external project, follow the procedure:
 Apply the __appSticky__ directive to your HTML tags and use the following attributes to manage its options.
 
 ```html
-    <div appSticky position="top" margin="50" id="myElement" >  </div>
+    <div appSticky position="top" margin="50" id="myElement"> </div>
 ```
     
 ## Attributes
