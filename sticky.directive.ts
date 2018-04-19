@@ -1,7 +1,7 @@
 import { Subscription } from 'rxjs/Subscription';
-import { Directive, Component, OnInit, OnDestroy, AfterViewInit, AfterViewChecked, HostListener, Inject, Renderer2, ElementRef, Input } from '@angular/core';
+import { Directive, Component, OnInit, OnDestroy, AfterViewInit, AfterViewChecked, HostListener, Inject, Renderer2, ElementRef, Input, NgZone } from '@angular/core';
 import { DOCUMENT } from '@angular/platform-browser';
-import { WINDOW_PROVIDERS, WINDOW, ScrollService } from './../services/common/window.service';
+import { WINDOW_PROVIDERS, WINDOW, ScrollService } from './services/window.service';
 
 @Directive({
   selector: '[appSticky]'
@@ -25,7 +25,8 @@ export class StickyDirective implements OnInit, OnDestroy, AfterViewInit, AfterV
     @Inject(WINDOW) private window: Window,
     private elRef: ElementRef,
     private renderer: Renderer2,
-    private scroll: ScrollService
+    private ngzone: NgZone,
+    private scroll: ScrollService,
   ) { }
 
   ngOnInit() {
@@ -59,30 +60,41 @@ export class StickyDirective implements OnInit, OnDestroy, AfterViewInit, AfterV
     // const y = this.window.pageYOffset || this.document.documentElement.scrollTop || this.document.body.scrollTop || 0;
     this.ypos = this.stickyanchor.getBoundingClientRect().top + this.y;
 
-    // console.log('== INIT == sreenh: ' + this.screenh + ' - ypos: ' + this.ypos + ' - elWidth: ' + this.elWidth + ' - elHeight: ' + this.elHeight);
+    // console.log(this.elRef.nativeElement.className, ' == INIT == sreenh: ' + this.screenh + ' - ypos: ' + this.ypos + ' - elWidth: ' + this.elWidth + ' - elHeight: ' + this.elHeight);
   }
 
   ngAfterViewChecked() {
+
+    // console.log('ngAfterViewChecked');
 
     if (this.elRef.nativeElement.offsetWidth !== 0) { // is visible? (no one of the parent is set to display: none)
 
       // ### GRACETIME ###
       // If the ngAfterViewChecked is trggered multiple times in few milliseconds, only the last call is executed
+      // NgZone runOutsideAngular is used in order to not trigger the ngAfterViewChecked continously
 
-      clearTimeout(this.idTimeout);
+      this.ngzone.runOutsideAngular(() => {
 
-      this.idTimeout = setTimeout(() => {
+        clearTimeout(this.idTimeout);
 
-          const newpos = this.stickyanchor.getBoundingClientRect().top + this.y;
+          this.idTimeout = setTimeout(() => {
 
-          if ( !(Math.round(this.ypos) === Math.round(newpos)) ) {
-            this.reset();
-            // console.log('== HARD_RESET == sreenh: ' + this.screenh + ' - ypos: ' + this.ypos + ' - newpos: ' + newpos + ' - elWidth: ' + this.elWidth + ' - elHeight: ' + this.elHeight);
-            this.ypos = newpos;
-            this.stickyfunction(this.y);
-          }
+              const newpos = this.stickyanchor.getBoundingClientRect().top + this.y;
 
-      }, 100);
+              if ( !(Math.round(this.ypos) === Math.round(newpos)) ) {
+
+                this.ngzone.run(() => {
+                  this.reset();
+                  // console.log(this.elRef.nativeElement.className, ' == HARD_RESET == sreenh: ' + this.screenh + ' - ypos: ' + this.ypos + ' - newpos: ' + newpos + ' - elWidth: ' + this.elWidth + ' - elHeight: ' + this.elHeight);
+                  this.ypos = newpos;
+                  this.stickyfunction(this.y);
+                });
+
+              }
+
+          }, 50);
+
+      });
 
     }
 
@@ -103,9 +115,9 @@ export class StickyDirective implements OnInit, OnDestroy, AfterViewInit, AfterV
    private stickyfunction(y: number, reset?: boolean) {
 
     const fixtop = y > (this.ypos - this.margin) && this.position === 'top';
-    const fixbottom = y < (this.ypos - this.screenh + this.margin) && this.position === 'bottom';
+    const fixbottom = y < (this.ypos - this.screenh + this.margin + this.elHeight) && this.position === 'bottom';
     const unfixtop = y <= (this.ypos - this.margin) && this.position === 'top';
-    const unfixbottom = y >= (this.ypos - this.screenh + this.margin) && this.position === 'bottom';
+    const unfixbottom = y >= (this.ypos - this.screenh + this.margin + this.elHeight) && this.position === 'bottom';
 
       if ( (fixtop || fixbottom) && !this.fixed) {
 

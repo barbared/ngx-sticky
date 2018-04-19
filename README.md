@@ -16,9 +16,9 @@ To install this component to an external project, follow the procedure:
 ```ts
     import { NgModule } from '@angular/core';
     import { BrowserModule } from '@angular/platform-browser';
-    import { MyTestApp } from './my-test-app';
     import { NgxStickyDirective } from 'ngx-sticky';
     import { WINDOW_PROVIDERS, WINDOW, ScrollService } from 'ngx-sticky/services/window.service';
+	import { MyTestApp } from './my-test-app';
 
     @NgModule({
         imports:      [ BrowserModule ],
