@@ -2,6 +2,9 @@
 
 **Angular sticky boxes**
 
+[![npm](https://img.shields.io/npm/v/ngx-sticky.svg?maxAge=2592000?style=flat-square)](https://www.npmjs.com/package/ngx-sticky)
+[![npm](https://img.shields.io/npm/dm/ngx-sticky.svg)](https://www.npmjs.com/package/ngx-sticky)
+
 ## Description
 Angular attribute directive for the creation of sticky boxes in the web-pages of your applications.
 Compatible __Angular4+__.
@@ -12,13 +15,15 @@ This directive will have a result similar to the CSS3 property __position: stick
 
 To install this component to an external project, follow the procedure:
 
-1. Add __NgxStickyDirective__ import to your __@NgModule__ like example below
+1. __npm install ngx-sticky --save__
+
+2. Add __NgxStickyDirective__ import to your __@NgModule__ like example below
 ```ts
     import { NgModule } from '@angular/core';
     import { BrowserModule } from '@angular/platform-browser';
     import { NgxStickyDirective } from 'ngx-sticky';
     import { WINDOW_PROVIDERS, WINDOW, ScrollService } from 'ngx-sticky/services/window.service';
-    import { MyTestApp } from './my-test-app';
+	import { MyTestApp } from './my-test-app';
 
     @NgModule({
         imports:      [ BrowserModule ],
