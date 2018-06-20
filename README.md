@@ -17,7 +17,7 @@ To install this component to an external project, follow the procedure:
 
 1. __npm install ngx-sticky --save__
 
-2. Add __NgxStickyDirective__ import to your __@NgModule__ like example below
+2. Add __NgxStickyModule__ import to your __@NgModule__ like example below
 ```ts
     import { NgModule } from '@angular/core';
     import { BrowserModule } from '@angular/platform-browser';
