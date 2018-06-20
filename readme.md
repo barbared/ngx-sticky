@@ -27,9 +27,9 @@ To install this component to an external project, follow the procedure:
 	import { MyTestApp } from './my-test-app';
 
     @NgModule({
-        imports:      [ 
-				BrowserModule,
-				NgxStickyModule 
+        imports: [ 
+			BrowserModule,
+			NgxStickyModule 
 		],
         declarations: [ MyTestApp ],
         bootstrap:    [ MyTestApp ]
