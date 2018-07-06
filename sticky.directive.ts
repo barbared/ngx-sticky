@@ -1,7 +1,6 @@
 import { Subscription } from 'rxjs/Subscription';
-import { Directive, OnInit, OnDestroy, AfterViewInit, AfterViewChecked, HostListener, Inject, Renderer2, ElementRef, Input, NgZone } from '@angular/core';
-import { DOCUMENT } from '@angular/platform-browser';
-import { WINDOW, ScrollService } from './services/window.service';
+import { Directive, OnInit, OnDestroy, AfterViewInit, AfterViewChecked, HostListener, Renderer2, ElementRef, Input, NgZone } from '@angular/core';
+import { ScrollService } from './services/window.service';
 
 @Directive({
   selector: '[appSticky]'
