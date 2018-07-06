@@ -53,7 +53,7 @@ export class ScrollService {
   ) {
     this.y = this.ySubject.asObservable();
     this.ySubject.next(this.computeScrollOffsetSnapshot());
-    Observable.fromEvent(window, 'scroll').subscribe((event) => {
+    Observable.fromEvent(window, 'scroll').subscribe(() => {
       this.ySubject.next(this.computeScrollOffsetSnapshot());
     });
     // window.addEventListener('scroll', (event) => {

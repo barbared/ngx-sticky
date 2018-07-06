@@ -1,7 +1,6 @@
 import { Subscription } from 'rxjs/Subscription';
-import { Directive, Component, OnInit, OnDestroy, AfterViewInit, AfterViewChecked, HostListener, Inject, Renderer2, ElementRef, Input, NgZone } from '@angular/core';
-import { DOCUMENT } from '@angular/platform-browser';
-import { WINDOW_PROVIDERS, WINDOW, ScrollService } from './services/window.service';
+import { Directive, OnInit, OnDestroy, AfterViewInit, AfterViewChecked, HostListener, Renderer2, ElementRef, Input, NgZone } from '@angular/core';
+import { ScrollService } from './services/window.service';
 
 @Directive({
   selector: '[appSticky]'
@@ -21,8 +20,6 @@ export class StickyDirective implements OnInit, OnDestroy, AfterViewInit, AfterV
   idTimeout: any;
 
   constructor(
-    @Inject(DOCUMENT) private document: Document,
-    @Inject(WINDOW) private window: Window,
     private elRef: ElementRef,
     private renderer: Renderer2,
     private ngzone: NgZone,

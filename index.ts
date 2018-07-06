@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import {StickyDirective} from './sticky.directive';
 import { NgModule } from '@angular/core';
-import { ScrollService, WINDOW, WINDOW_PROVIDERS } from './services/window.service';
+import { ScrollService, WINDOW_PROVIDERS } from './services/window.service';
 
 @NgModule({
  imports: [
